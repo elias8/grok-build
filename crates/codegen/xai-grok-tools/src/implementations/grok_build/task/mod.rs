@@ -616,7 +616,7 @@ impl xai_tool_runtime::Tool for TaskTool {
                 model_override_provenance: ModelOverrideProvenance::Tool {
                     selection: model_selection,
                 },
-                reasoning_effort: None,
+                reasoning_effort: input.reasoning_effort,
                 persona: None,
                 // JSON cannot set this field. Compat-harness adapters still
                 // populate it in-process; model-facing spawns stay `None`.
@@ -936,6 +936,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -999,6 +1000,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1035,6 +1037,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1068,6 +1071,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1128,6 +1132,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1186,6 +1191,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1231,6 +1237,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -1341,6 +1348,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         }
@@ -2250,6 +2258,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: Some("test-model".into()),
+            reasoning_effort: None,
             workspace: None,
             task_id: Some("task-123".into()),
         };
@@ -2537,6 +2546,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         })
@@ -2588,6 +2598,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -2626,6 +2637,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         };
@@ -2674,6 +2686,7 @@ mod tests {
                 resume_from: Some("prev-id".into()),
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -2742,6 +2755,7 @@ mod tests {
                     resume_from: Some(sentinel.into()),
                     cwd: None,
                     model: None,
+                    reasoning_effort: None,
                     workspace: None,
                     task_id: None,
                 },
@@ -2790,6 +2804,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         };
@@ -2820,6 +2835,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("/tmp".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -2876,6 +2892,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -2928,6 +2945,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("null".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -2980,6 +2998,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("  ".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3035,6 +3054,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("/nonexistent/path/that/does/not/exist".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3071,6 +3091,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("/nonexistent/path/that/does/not/exist".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3128,6 +3149,7 @@ mod tests {
                     resume_from: None,
                     cwd: Some(sentinel.into()),
                     model: None,
+                    reasoning_effort: None,
                     workspace: None,
                     task_id: None,
                 },
@@ -3183,6 +3205,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("/tmp".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3242,6 +3265,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("\"/tmp".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3296,6 +3320,7 @@ mod tests {
                 resume_from: None,
                 cwd: Some("/tmp".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3346,6 +3371,7 @@ mod tests {
                 resume_from: Some("prev-id".into()),
                 cwd: Some("/tmp/some-dir".into()),
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             },
@@ -3359,6 +3385,48 @@ mod tests {
                 assert!(sub.output.contains("resumed"));
             }
             other => panic!("Expected SubagentCompleted, got {:?}", other),
+        }
+    }
+
+    #[tokio::test]
+    async fn reasoning_effort_threads_to_runtime_overrides() {
+        for effort in [
+            Some("high"),
+            Some("none"),
+            Some("NONE"),
+            Some("invalid-effort"),
+            None,
+        ] {
+            let (backend, mut rx) = make_backend();
+            let shared = resources_for_task(backend).into_shared();
+            let handle = tokio::spawn(async move {
+                let request = unwrap_spawn(rx.recv().await.unwrap());
+                assert_eq!(
+                    request.runtime_overrides.reasoning_effort.as_deref(),
+                    effort
+                );
+                request
+                    .respond_with(|request| SubagentResult {
+                        success: true,
+                        output: "ok".into(),
+                        subagent_id: request.id.clone(),
+                        child_session_id: request.id.clone(),
+                        ..Default::default()
+                    })
+                    .unwrap();
+            });
+            let mut wire = serde_json::json!({
+                "prompt": "do it", "description": "test", "run_in_background": false
+            });
+            if let Some(effort) = effort {
+                wire["reasoning_effort"] = serde_json::json!(effort);
+            }
+            let input: TaskToolInput = serde_json::from_value(wire).unwrap();
+            let result = xai_tool_runtime::Tool::run(&TaskTool, test_ctx(shared), input)
+                .await
+                .unwrap();
+            handle.await.unwrap();
+            assert!(matches!(result, ToolOutput::SubagentCompleted(_)));
         }
     }
 

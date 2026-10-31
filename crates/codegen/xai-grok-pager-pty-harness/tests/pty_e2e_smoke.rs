@@ -53,6 +53,8 @@ mod shift_tab_on_welcome_starts_session_in_plan_mode;
 mod small_screen_tip_survives_slow_turn;
 #[path = "pty_e2e/tab_focuses_scrollback_in_vim_and_default_modes.rs"]
 mod tab_focuses_scrollback_in_vim_and_default_modes;
+#[path = "pty_e2e/task_reasoning_effort.rs"]
+mod task_reasoning_effort;
 #[path = "pty_e2e/waiting_for_model_label.rs"]
 mod waiting_for_model_label;
 #[path = "pty_e2e/welcome_screen.rs"]

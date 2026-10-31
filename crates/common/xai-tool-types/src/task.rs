@@ -112,6 +112,15 @@ pub struct TaskToolInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub model: Option<String>,
 
+    /// Optional reasoning effort override for this subagent.
+    #[schemars(
+        description = "Optional reasoning effort override for this subagent. Takes precedence over \
+            role and persona defaults; when omitted, those defaults or the parent session apply. \
+            Supported values depend on the selected model."
+    )]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reasoning_effort: Option<String>,
+
     /// Optional id of the workspace the child runs in. Accepted on the wire
     /// and ignored locally; omitted from the derived schema, so hosts that
     /// support it advertise the property themselves.
@@ -152,6 +161,8 @@ struct TaskToolInputDe {
     #[serde(default)]
     model: Option<String>,
     #[serde(default)]
+    reasoning_effort: Option<String>,
+    #[serde(default)]
     workspace: Option<String>,
     #[serde(default)]
     task_id: Option<String>,
@@ -174,6 +185,7 @@ impl Serialize for TaskToolInput {
             resume_from: self.resume_from.as_deref(),
             cwd: self.cwd.as_deref(),
             model: self.model.as_deref(),
+            reasoning_effort: self.reasoning_effort.as_deref(),
             workspace: self.workspace.as_deref(),
             task_id: self.task_id.as_deref(),
         }
@@ -196,6 +208,8 @@ struct TaskToolInputSer<'a> {
     cwd: Option<&'a str>,
     #[serde(skip_serializing_if = "Option::is_none")]
     model: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    reasoning_effort: Option<&'a str>,
     #[serde(skip_serializing_if = "Option::is_none")]
     workspace: Option<&'a str>,
     task_id: Option<&'a str>,
@@ -228,6 +242,7 @@ impl From<TaskToolInputDe> for TaskToolInput {
             resume_from: raw.resume_from,
             cwd: raw.cwd,
             model: raw.model,
+            reasoning_effort: raw.reasoning_effort,
             workspace: raw.workspace,
             task_id: raw.task_id,
         }
@@ -1599,6 +1614,38 @@ mod tests {
     }
 
     #[test]
+    fn task_tool_input_reasoning_effort_round_trips() {
+        for effort in [None, Some("high")] {
+            let mut wire = serde_json::json!({"prompt": "p", "description": "d"});
+            if let Some(effort) = effort {
+                wire["reasoning_effort"] = serde_json::json!(effort);
+            }
+            let input: TaskToolInput = serde_json::from_value(wire).unwrap();
+            assert_eq!(input.reasoning_effort.as_deref(), effort);
+            let serialized = serde_json::to_value(&input).unwrap();
+            assert_eq!(
+                serialized.get("reasoning_effort"),
+                effort.map(serde_json::Value::from).as_ref()
+            );
+            let replayed: TaskToolInput = serde_json::from_value(serialized).unwrap();
+            assert_eq!(replayed.reasoning_effort.as_deref(), effort);
+        }
+    }
+
+    #[test]
+    fn task_tool_input_reasoning_effort_schema_is_optional() {
+        let schema = serde_json::to_value(schemars::schema_for!(TaskToolInput)).unwrap();
+        assert!(schema["properties"]["reasoning_effort"].is_object());
+        assert!(
+            !schema["required"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|field| field == "reasoning_effort")
+        );
+    }
+
+    #[test]
     fn task_tool_input_model_parses_explicit() {
         let input: TaskToolInput =
             serde_json::from_str(r#"{"description": "d", "prompt": "p", "model": "grok-3"}"#)
@@ -1619,6 +1666,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         };

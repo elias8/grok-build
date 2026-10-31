@@ -328,6 +328,7 @@ mod tests {
                 resume_from: None,
                 cwd: None,
                 model: None,
+                reasoning_effort: None,
                 workspace: None,
                 task_id: None,
             })),
@@ -379,6 +380,7 @@ mod tests {
             resume_from: None,
             cwd: None,
             model: None,
+            reasoning_effort: None,
             workspace: None,
             task_id: None,
         }));
